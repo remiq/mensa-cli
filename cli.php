@@ -14,7 +14,6 @@ function set_color($color = 'white') {
 }
 
 $mensa = new Mensa();
-$mensa->init();
 $data = $mensa->parse();
 echo '=== Mensa ===', "\n";
 foreach ($data as $r) {

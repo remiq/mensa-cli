@@ -4,28 +4,28 @@ class Mensa
 {
     private $blacklist = array(
         'Antipasti', 'Salatbuffet',
-        'Bratkartoffeln', 'Eierspätzle', 'Petersilienkartoffeln'
+        'Bratkartoffeln', 'Eierspätzle', 'Petersilienkartoffeln', 'Dampfkartoffeln', 'Parboiledreis', 'Spiralnudeln'
     );
 
-    private $dom;
 
-    public function init()
+    private function get_dom()
     {
-        $daily_file = realpath(dirname(__FILE__)).'mensa-'.date('Ymd').'.html';
+        $daily_file = realpath(dirname(__FILE__)).'/mensa-'.date('Ymd').'.html';
         if (!file_exists($daily_file)) {
             $file_content = file_get_contents('http://www.studentenwerk-berlin.de/cn/mensen/speiseplan/hu_nord/');
             file_put_contents($daily_file, $file_content);
         }
 
         libxml_use_internal_errors(true);
-        $this->dom = new DomDocument;
-        $this->dom->loadHTMLFile($daily_file);
+        $dom = new DomDocument;
+        $dom->loadHTMLFile($daily_file);
+        return $dom;
     }
 
     public function parse()
     {
         $ret = array();
-        $xpath = new DOMXPath($this->dom);
+        $xpath = new DOMXPath($this->get_dom());
         $nodes = $xpath->query('//td[@class="mensa_day_speise_name"]');
         foreach ($nodes as $i => $node) {
             $class = $node->childNodes->item(1)->attributes->getNamedItem('href')->textContent;
@@ -53,9 +53,11 @@ class Mensa
 
     private static function get_type($name)
     {
-        if (preg_match('/((S|s)uppe|brühe)/', $name)) return 'soup';
-        if (preg_match('/(Salat)/', $name)) return 'veg';
+        if (preg_match('/((S|s)uppe|(B|b)rühe)/', $name)) return 'soup';
+        if (preg_match('/(Salat|Tofu)/', $name)) return 'veg';
         if (preg_match('/^(Brokkoli|Paprikagemüse)$/', $name)) return 'veg';
+        if (preg_match('/((F|f)isch|(S|s)hrimp)/', $name)) return 'fish';
+
         return '?';
     }
 }
