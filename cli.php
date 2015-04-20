@@ -14,8 +14,9 @@ function set_color($color = 'white') {
 }
 
 $mensa = new Mensa();
-$data = $mensa->parse();
-echo '=== Mensa ===', "\n";
+$date = date('Y-m-d');
+$data = $mensa->parse($date);
+echo '=== Mensa ', $date ,' ===', "\n";
 foreach ($data as $r) {
     echo set_color($r['color']);
     echo '[', $r['type'], '] ', $r['name'], set_color(), "\n";
