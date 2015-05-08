@@ -2,12 +2,14 @@
 
 class Mensa
 {
+    // TODO: move to external, git-ignored file
     private $blacklist = array(
         // always
         'Antipasti', 'Salatbuffet',
         // side-carbs
-        'Bratkartoffeln', 'Eierspätzle', 'Petersilienkartoffeln', 'Dampfkartoffeln',
-        'Parboiledreis', 'Spiralnudeln', 'Reis', 'Vollkornspiralnudeln'
+        'Bratkartoffeln', 'Eierspätzle', 'Petersilienkartoffeln', 'Dampfkartoffeln', 'Langkornreis',
+        'Parboiledreis', 'Spiralnudeln', 'Reis', 'Vollkornspiralnudeln', 'Kartoffelpüree', 'Salzkartoffeln',
+        'Schnittlauchkartoffeln'
     );
 
 
@@ -57,14 +59,14 @@ class Mensa
 
     private static function get_type($name)
     {
-        if (preg_match('/(S|s)teak/', $name)) return 'grill';
-        if (preg_match('/((S|s)uppe|(B|b)rühe)/', $name)) return 'soup';
-        if (preg_match('/((S|s)alat|Tofu|((S|s)oja))/', $name)) return 'veg';
-        if (preg_match('/^(Brokkoli|Paprikagemüse)$/', $name)) return 'veg';
-        if (preg_match('/((F|f)isch|(S|s)hrimp)/', $name)) return 'fish';
-
+        // TODO: move to external, git-ignored file
         // personal preferences
-        if (preg_match('/Kohlrabi/', $name)) return '!';
+        if (preg_match('/Kohlrabi|Hamburger/', $name)) return '!';
+
+        if (preg_match('/steak|currywurst/i', $name)) return 'grill';
+        if (preg_match('/(fisch|shrimp|filet|hering)/i', $name)) return 'fish';
+        if (preg_match('/(suppe|brühe|bouillon)/i', $name)) return 'soup';
+        if (preg_match('/(salat|tofu|soja|brokkoli|gemüse|bohnen|zucchini|vegetar)/i', $name)) return 'veg';
 
         return '?';
     }

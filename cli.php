@@ -16,10 +16,21 @@ function set_color($color = 'white') {
 $mensa = new Mensa();
 $date = date('Y-m-d');
 $data = $mensa->parse($date);
+$fav_foods = array();
 echo '=== Mensa ', $date ,' ===', "\n";
 foreach ($data as $r) {
     echo set_color($r['color']);
     echo '[', $r['type'], '] ', $r['name'], set_color(), "\n";
+    if ($r['type'] === '!') {
+        $fav_foods[] = $r['name'];
+    }
 }
 echo '===', "\n";
+if (!empty($fav_foods)) {
+    echo 'Food alert triggered for:', "\n";
+    foreach ($fav_foods as $fav_food) {
+        echo $fav_food, "\n";
+    }
+    echo '===', "\n";
+}
 
