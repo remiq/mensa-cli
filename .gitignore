@@ -2,3 +2,5 @@ mensa-*.html
 blacklist.txt
 favs.txt
 /vendor/
+node_modules/
+.idea/

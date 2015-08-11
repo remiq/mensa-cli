@@ -36,6 +36,8 @@ skype.f_send(
 
 /**
 
+http://kirils.org/skype/stuff/pdf/2013/SkypeSDK.pdf
+
 OPEN CHAT #live:remigiusz.jackowski/$227d36e668331949
   opens chat
 
