@@ -1,1 +1,4 @@
 mensa-*.html
+blacklist.txt
+favs.txt
+/vendor/

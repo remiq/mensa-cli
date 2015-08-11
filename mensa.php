@@ -2,15 +2,15 @@
 
 class Mensa
 {
-    // TODO: move to external, git-ignored file
-    private $blacklist = array(
-        // always
-        'Antipasti', 'Salatbuffet',
-        // side-carbs
-        'Bratkartoffeln', 'Eierspätzle', 'Petersilienkartoffeln', 'Dampfkartoffeln', 'Langkornreis',
-        'Parboiledreis', 'Spiralnudeln', 'Reis', 'Vollkornspiralnudeln', 'Kartoffelpüree', 'Salzkartoffeln',
-        'Schnittlauchkartoffeln'
-    );
+    private $blacklist = array();
+    private $favs = array();
+
+    public function __construct() {
+        if (file_exists('blacklist.txt'))
+            $this->blacklist = array_filter(preg_split('/\n/', file_get_contents('blacklist.txt')));
+        if (file_exists('favs.txt'))
+            $this->favs = array_filter(preg_split('/\n/', file_get_contents('favs.txt')));
+    }
 
 
     private function get_dom($date)
@@ -40,7 +40,7 @@ class Mensa
             if (in_array($name, $this->blacklist)) continue;
             $ret[] = array(
                 'name'  =>  $name,
-                'type'  =>  self::get_type($name),
+                'type'  =>  $this->get_type($name),
                 'color' =>  $color,
             );
         }
@@ -57,11 +57,11 @@ class Mensa
         return $name;
     }
 
-    private static function get_type($name)
+    private function get_type($name)
     {
-        // TODO: move to external, git-ignored file
         // personal preferences
-        if (preg_match('/Kohlrabi|Hamburger/', $name)) return '!';
+        $fav_regex = '/'.join('|', $this->favs).'/';
+        if (preg_match($fav_regex, $name)) return '!';
 
         if (preg_match('/steak|currywurst/i', $name)) return 'grill';
         if (preg_match('/(fisch|shrimp|filet|hering)/i', $name)) return 'fish';
