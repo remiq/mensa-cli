@@ -6,10 +6,12 @@ class Mensa
     private $favs = array();
 
     public function __construct() {
-        if (file_exists('blacklist.txt'))
-            $this->blacklist = array_filter(preg_split('/\n/', file_get_contents('blacklist.txt')));
-        if (file_exists('favs.txt'))
-            $this->favs = array_filter(preg_split('/\n/', file_get_contents('favs.txt')));
+        $file_blacklist = realpath(dirname(__FILE__)).'/blacklist.txt';
+        $file_favs = realpath(dirname(__FILE__)).'/favs.txt';
+        if (file_exists($file_blacklist))
+            $this->blacklist = array_filter(preg_split('/\n/', file_get_contents($file_blacklist)));
+        if (file_exists($file_favs))
+            $this->favs = array_filter(preg_split('/\n/', file_get_contents($file_favs)));
     }
 
 
